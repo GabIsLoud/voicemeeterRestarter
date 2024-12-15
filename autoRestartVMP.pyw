@@ -11,6 +11,7 @@ import pygetwindow as gw
 import os
 from pywinauto.application import Application
 import argparse
+import keyboard
 
 def main():
     # Start the Tkinter main loop in the main thread
@@ -32,6 +33,9 @@ def main():
     # Minimize the window if the -m/--minimize option was used
     if args.minimize:
         window.after(100, app.minimize)  # Delay the call to minimize
+
+    # Setup hotkeys
+    app.setup_hotkeys()
 
     # Start the Tkinter main loop
     window.mainloop()
@@ -192,7 +196,7 @@ class App:
         # Start the new icon if it's not already running
         self.icon = new_icon
         if not self.icon._running:
-            threading.Thread(target=self.icon.run).start()
+            threading.Thread(target(self.icon.run).start()
 
     from pywinauto.application import Application
 
@@ -206,6 +210,10 @@ class App:
                 app.Voicemeeter.minimize()  # Minimize the window if it's not already minimized
         except Exception as e:
             print(f"Error minimizing Voicemeeter window: {e}")
+
+    def setup_hotkeys(self):
+        # Register the hotkey (Ctrl+F9) to trigger the manual_restart method
+        keyboard.add_hotkey('ctrl+f9', self.manual_restart)
 
 if __name__ == "__main__":
     main()
